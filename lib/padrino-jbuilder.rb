@@ -96,7 +96,10 @@ module Tilt
           return data.call(::Tilt::Jbuilder.new(scope))
         elsif data.is_a?(String)
           view_path = scope.instance_variable_get('@_jbuilder_view_path')
-          scope.instance_eval(File.open(::Dir[::File.join(view_path, data + ".{*.,}jbuilder")].first).read)
+
+          file = ::Dir[::File.join(view_path, data + ".{*.,}jbuilder")].first
+
+          scope.instance_eval(file ? File.open(file).read : data)
         end
       end
     end

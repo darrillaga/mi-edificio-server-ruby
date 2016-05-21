@@ -1,9 +1,12 @@
-MiEdificioServer::App.controllers :comments do
-  
-  # get :index, :map => '/foo/bar' do
-  #   session[:foo] = 'bar'
-  #   render 'index'
-  # end
+MiEdificioServer::App.controllers :comments, parent: [:buildings, :building_users, :posts] do
+
+  get :index, :provides => [:json] do
+    params_keys = [:building_id, :building_user_id, :post_id]
+
+    @comments = Comment.where(params.slice(*params_keys))
+
+    jbuilder 'comments/index'
+  end
 
   # get :sample, :map => '/sample/url', :provides => [:any, :js] do
   #   case content_type

@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 4) do
     t.string   "code"
     t.string   "name"
     t.string   "address"
-    t.string   "contactEmail"
+    t.string   "contact_email"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end

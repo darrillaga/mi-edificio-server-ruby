@@ -1,7 +1,13 @@
+require 'sinatra/hashfix'
+
 module MiEdificioServer
   class App < Padrino::Application
     use ConnectionPoolManagement
     enable :sessions
+
+    register Sinatra::Hashfix
+
+    Jbuilder.key_format camelize: :lower
 
     ##
     # Caching support.

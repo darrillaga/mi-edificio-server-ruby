@@ -1,0 +1,1 @@
+json.(@building_user, :id, :name, :apartment, :role_description, :building_creator)

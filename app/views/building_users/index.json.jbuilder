@@ -1,0 +1,1 @@
+json.array! @building_users, partial: 'building_users/building_user', as: :"@building_user"

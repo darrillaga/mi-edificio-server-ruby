@@ -2,7 +2,8 @@ MiEdificioServer::App.controllers :buildings do
   
   get :index, :provides => [:json] do
     @buildings = Building.all
-    render :jbuilder, 'buildings/index'
+
+    jbuilder 'buildings/index'
   end
   
   get :show, :with => :id do

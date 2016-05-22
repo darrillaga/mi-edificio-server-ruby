@@ -1,6 +1,4 @@
 MiEdificioServer::App.controllers :buildings do
-
-  NO_CONTENT = 204
   
   get :index, provides: [:json] do
     @buildings = Building.all
@@ -8,19 +6,21 @@ MiEdificioServer::App.controllers :buildings do
     jbuilder 'buildings/index'
   end
 
-  get :by_code, 'by-code', with: :code, provides: [:json] do
-    params_keys = [:code]
+  get :by_code, 'buildings/by-code', with: :code, provides: [:json] do
+    @building = Building.find_by_code(params[:code])
 
-    @building = Building.where(params.slice(*params_keys)).first
-
-    jbuilder 'buildings/show'
+    respond_not_nil(@building) do
+      jbuilder 'buildings/show'
+    end
   end
 
   get :show, '', with: :id, provides: [:json] do
 
-    @building = Building.find(params[:id])
+    @building = Building.find_by_id(params[:id])
 
-    jbuilder 'buildings/show'
+    respond_not_nil(@building) do
+      jbuilder 'buildings/show'
+    end
   end
 
   post :create, '', provides: [:json] do
@@ -42,7 +42,9 @@ MiEdificioServer::App.controllers :buildings do
 
     @building = Building.update(params[:id], attributes)
 
-    jbuilder 'buildings/show'
+    respond_not_nil(@building) do
+      jbuilder 'buildings/show'
+    end
   end
 
   delete :destroy, '', with: :id, provides: [:json] do
@@ -50,7 +52,9 @@ MiEdificioServer::App.controllers :buildings do
 
     @building = Building.where(params.slice(*params_keys)).delete_all
 
-    NO_CONTENT
+    respond_if_condition(@building.count > 0) do
+      respond_no_content
+    end
   end
 
 end

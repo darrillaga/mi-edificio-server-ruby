@@ -1,6 +1,6 @@
 MiEdificioServer::App.controllers :comments, parent: [:buildings, :building_users, :posts] do
 
-  get :index, :provides => [:json] do
+  get :index, provides: [:json] do
     params_keys = [:building_id, :building_user_id, :post_id]
 
     @comments = Comment.where(params.slice(*params_keys))
@@ -8,19 +8,28 @@ MiEdificioServer::App.controllers :comments, parent: [:buildings, :building_user
     jbuilder 'comments/index'
   end
 
-  # get :sample, :map => '/sample/url', :provides => [:any, :js] do
-  #   case content_type
-  #     when :js then ...
-  #     else ...
-  # end
+  post :create, "", provides: [:json] do
+    params_keys = [:text, :building_id, :user_id, :post_id]
 
-  # get :foo, :with => :id do
-  #   "Maps to url '/foo/#{params[:id]}'"
-  # end
+    @comment = Comment.create(params.slice(*params_keys))
 
-  # get '/example' do
-  #   'Hello world!'
-  # end
-  
+    jbuilder 'comments/show'
+  end
+
+  put :update, "", with: :id, provides: [:json] do
+    params_keys = [:text]
+
+    @comment = Comment.update(params[:id], params.slice(*params_keys))
+
+    jbuilder 'comments/show'
+  end
+
+  delete :destroy, "", with: :id, provides: [:json] do
+    params_keys = [:building_id, :building_user_id, :post_id, :id]
+
+    @comment = Comment.where(params.slice(*params_keys)).delete_all
+
+    NO_CONTENT
+  end
 
 end

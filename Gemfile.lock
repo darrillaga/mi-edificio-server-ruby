@@ -41,6 +41,8 @@ GEM
       activesupport (>= 3.1)
     pg (0.18.4)
     rack (1.6.4)
+    rack-parser (0.7.0)
+      rack
     rack-protection (1.5.3)
       rack
     rake (11.1.2)
@@ -68,6 +70,7 @@ DEPENDENCIES
   padrino-core (= 0.13.2)
   padrino-gen (= 0.13.2)
   pg
+  rack-parser (~> 0.7.0)
   rake
   sinatra-hashfix (~> 0.1.0)
   sqlite3

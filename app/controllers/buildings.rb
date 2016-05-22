@@ -1,23 +1,41 @@
 MiEdificioServer::App.controllers :buildings do
+
+  NO_CONTENT = 204
   
-  get :index, :provides => [:json] do
+  get :index, provides: [:json] do
     @buildings = Building.all
 
     jbuilder 'buildings/index'
   end
-  
-  get :show, :with => :id do
-    # url is generated as "/user/#{params[:user_id]}/product/show/#{params[:id]}"
-    # url_for(:product, :show, :user_id => 5, :id => 10) => "/user/5/product/show/10"
+
+  post :create, "", provides: [:json] do
+    params_keys = [:name, :address, :contact_email]
+
+    last_building = Building.last;
+
+    #TODO generate building code properly
+    attributes = params.slice(*params_keys).merge(code: last_building ? "#{last_building.id}code12" : "1code12")
+
+    @building = Building.create(attributes)
+
+    jbuilder 'buildings/show'
   end
 
-  post :create do
+  put :update, "", with: :id, provides: [:json] do
+    params_keys = [:name, :address, :contact_email]
+    attributes = params.slice(*params_keys)
+
+    @building = Building.update(params[:id], attributes)
+
+    jbuilder 'buildings/show'
   end
 
-  put :update do
-  end
+  delete :destroy, "", with: :id, provides: [:json] do
+    params_keys = [:id]
 
-  delete :destroy do
+    @building = Building.where(params.slice(*params_keys)).delete_all
+
+    NO_CONTENT
   end
 
 end

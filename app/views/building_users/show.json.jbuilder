@@ -1,0 +1,1 @@
+json.partial! 'building_users/building_user', "@building_user": @building_user

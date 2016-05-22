@@ -3,11 +3,33 @@ require 'sinatra/hashfix'
 module MiEdificioServer
   class App < Padrino::Application
     use ConnectionPoolManagement
-    enable :sessions
+
+    use Rack::Parser, :content_types => {
+        'application/json'  => Proc.new { |body| ::MultiJson.decode body }
+    }
 
     register Sinatra::Hashfix
 
     Jbuilder.key_format camelize: :lower
+
+    before do
+      deep_snake_case_params!
+    end
+
+    def deep_snake_case_params!(val = params)
+      case val
+        when Array
+          val.map {|v| deep_snake_case_params! v }
+        when Hash
+          val.keys.each do |k, v = val[k]|
+            val.delete k
+            val[k.underscore] = deep_snake_case_params!(v)
+          end
+          val
+        else
+          val
+      end
+    end
 
     ##
     # Caching support.

@@ -27,9 +27,9 @@
 #
 Padrino.configure_apps do
   # enable :sessions
-  set :session_secret, '407f99ceb446a2ae0185008d2de05e06f846213077cbbfe0bb0c004fc33a68f8'
-  set :protection, :except => :path_traversal
-  set :protect_from_csrf, true
+  # set :session_secret, '407f99ceb446a2ae0185008d2de05e06f846213077cbbfe0bb0c004fc33a68f8'
+  # set :protection, :except => :path_traversal
+  # set :protect_from_csrf, true
 end
 
 # Mounts the core application for this project

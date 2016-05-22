@@ -1,7 +1,7 @@
-MiEdificioServer::App.controllers :comments, parent: [:buildings, :users, :posts] do
+MiEdificioServer::App.controllers :comments, parent: [:buildings, :posts] do
 
   get :index, provides: [:json] do
-    params_keys = [:building_id, :user_id, :post_id]
+    params_keys = [:building_id, :post_id]
 
     @comments = Comment.where(params.slice(*params_keys))
 
@@ -9,7 +9,7 @@ MiEdificioServer::App.controllers :comments, parent: [:buildings, :users, :posts
   end
 
   post :create, '', provides: [:json] do
-    params_keys = [:text, :building_id, :user_id, :post_id]
+    params_keys = [:text, :building_id, :post_id]
 
     @comment = Comment.create(params.slice(*params_keys))
 
@@ -27,7 +27,7 @@ MiEdificioServer::App.controllers :comments, parent: [:buildings, :users, :posts
   end
 
   delete :destroy, '', with: :id, provides: [:json] do
-    params_keys = [:building_id, :user_id, :post_id, :id]
+    params_keys = [:building_id, :post_id, :id]
 
     @comment = Comment.where(params.slice(*params_keys)).delete_all
 

@@ -1,7 +1,7 @@
-MiEdificioServer::App.controllers :posts, parent: [:buildings, :users] do
+MiEdificioServer::App.controllers :posts, parent: [:buildings] do
 
   get :index, provides: [:json] do
-    params_keys = [:building_id, :user_id]
+    params_keys = [:building_id]
 
     @posts = Post.where(params.slice(*params_keys))
 
@@ -9,7 +9,7 @@ MiEdificioServer::App.controllers :posts, parent: [:buildings, :users] do
   end
 
   post :create, '', provides: [:json] do
-    params_keys = [:text, :building_id, :user_id]
+    params_keys = [:text, :building_id]
 
     @post = Post.create(params.slice(*params_keys))
 
@@ -27,7 +27,7 @@ MiEdificioServer::App.controllers :posts, parent: [:buildings, :users] do
   end
 
   delete :destroy, '', with: :id, provides: [:json] do
-    params_keys = [:building_id, :user_id, :id]
+    params_keys = [:building_id, :id]
 
     @post = Post.where(params.slice(*params_keys)).delete_all
 

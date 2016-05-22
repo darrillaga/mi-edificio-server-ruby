@@ -1,7 +1,5 @@
 MiEdificioServer::App.controllers :users, parent: :buildings do
 
-  NO_CONTENT = 204
-
   get :index, provides: [:json] do
     params_keys = [:building_id]
 
@@ -15,17 +13,19 @@ MiEdificioServer::App.controllers :users, parent: :buildings do
 
     @building_user = BuildingUser.where(params.slice(*params_keys)).first
 
-    jbuilder 'building_users/show'
+    respond_not_nil(@building_user) do
+      jbuilder 'building_users/show'
+    end
   end
 
   post :create, '', provides: [:json] do
     params_keys = [:building_id, :name, :apartment, :role_description]
     attributes = params.slice(*params_keys).merge(building_creator: false)
 
-    building = Building.find(params[:building_id])
+    building = Building.find_by_id(params[:building_id])
 
     if (building.nil?)
-      #TODO not found
+      return respond_not_found
     elsif (building.building_users.count == 0)
       attributes[:building_creator] = true
     end
@@ -41,7 +41,9 @@ MiEdificioServer::App.controllers :users, parent: :buildings do
 
     @building_user = BuildingUser.update(params[:id], attributes)
 
-    jbuilder 'building_users/show'
+    respond_not_nil(@building_user) do
+      jbuilder 'building_users/show'
+    end
   end
 
   delete :destroy, '', with: :id, provides: [:json] do
@@ -49,7 +51,9 @@ MiEdificioServer::App.controllers :users, parent: :buildings do
 
     @building_user = BuildingUser.where(params.slice(*params_keys)).delete_all
 
-    NO_CONTENT
+    respond_if_condition(@building_user.count > 0) do
+      respond_no_content
+    end
   end
 
 end

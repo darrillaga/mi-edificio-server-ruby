@@ -21,7 +21,9 @@ MiEdificioServer::App.controllers :comments, parent: [:buildings, :users, :posts
 
     @comment = Comment.update(params[:id], params.slice(*params_keys))
 
-    jbuilder 'comments/show'
+    respond_not_nil(@comment) do
+      jbuilder 'comments/show'
+    end
   end
 
   delete :destroy, '', with: :id, provides: [:json] do
@@ -29,7 +31,9 @@ MiEdificioServer::App.controllers :comments, parent: [:buildings, :users, :posts
 
     @comment = Comment.where(params.slice(*params_keys)).delete_all
 
-    NO_CONTENT
+    respond_if_condition(@comment.count > 0) do
+      respond_no_content
+    end
   end
 
 end

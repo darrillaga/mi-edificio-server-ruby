@@ -8,7 +8,22 @@ MiEdificioServer::App.controllers :buildings do
     jbuilder 'buildings/index'
   end
 
-  post :create, "", provides: [:json] do
+  get :by_code, 'by-code', with: :code, provides: [:json] do
+    params_keys = [:code]
+
+    @building = Building.where(params.slice(*params_keys)).first
+
+    jbuilder 'buildings/index'
+  end
+
+  get :show, '', with: :id, provides: [:json] do
+
+    @building = Building.find(params[:id])
+
+    jbuilder 'buildings/index'
+  end
+
+  post :create, '', provides: [:json] do
     params_keys = [:name, :address, :contact_email]
 
     last_building = Building.last;
@@ -21,7 +36,7 @@ MiEdificioServer::App.controllers :buildings do
     jbuilder 'buildings/show'
   end
 
-  put :update, "", with: :id, provides: [:json] do
+  put :update, '', with: :id, provides: [:json] do
     params_keys = [:name, :address, :contact_email]
     attributes = params.slice(*params_keys)
 
@@ -30,7 +45,7 @@ MiEdificioServer::App.controllers :buildings do
     jbuilder 'buildings/show'
   end
 
-  delete :destroy, "", with: :id, provides: [:json] do
+  delete :destroy, '', with: :id, provides: [:json] do
     params_keys = [:id]
 
     @building = Building.where(params.slice(*params_keys)).delete_all

@@ -9,7 +9,7 @@ MiEdificioServer::App.controllers :comments, parent: [:buildings, :posts] do
   end
 
   post :create, '', provides: [:json] do
-    params_keys = [:text, :building_id, :post_id]
+    params_keys = [:text, :building_id, :post_id, :building_user_id]
 
     @comment = Comment.create(params.slice(*params_keys))
 

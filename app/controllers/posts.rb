@@ -9,7 +9,7 @@ MiEdificioServer::App.controllers :posts, parent: [:buildings] do
   end
 
   post :create, '', provides: [:json] do
-    params_keys = [:text, :building_id]
+    params_keys = [:text, :building_id, :building_user_id]
 
     @post = Post.create(params.slice(*params_keys))
 

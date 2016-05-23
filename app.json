@@ -1,6 +1,7 @@
 {
   "name": "mi-edificio-server-ruby",
   "scripts": {
+    "postdeploy": "bundle exec rake db:setup"
   },
   "env": {
     "LANG": {
